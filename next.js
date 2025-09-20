@@ -16,12 +16,10 @@ export default function Leaderboard() {
         provider
       );
 
-      // (contoh sederhana: ambil manual, sebaiknya ada backend indexer)
-      const members = ["0x123...", "0x456..."];
-      const scores = await Promise.all(
-        members.map(async (addr) => {
-          const points = await contract.activityPoints(addr);
-          return { addr, points: points.toString() };
+      const filter = contract.filters.MemberJoined();
+const events = await contract.queryFilter(filter, 0, "latest");
+const members = events.map(e => e.args.member);
+
         })
       );
 
